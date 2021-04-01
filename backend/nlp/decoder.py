@@ -1,9 +1,6 @@
-from pathlib import Path 
 import MeCab
 import subprocess
-import gdown
 
-import sentencepiece as spm
 from transformers import (
     pipeline,
     XLNetLMHeadModel,
@@ -13,29 +10,19 @@ from transformers import (
 import logging
 logger = logging.getLogger(__name__)
 
-class XLNet:
+class XLNet():
     def __init__(self):
         cmd = 'echo `mecab-config --dicdir`"/mecab-ipadic-neologd"'
         path = (subprocess.Popen(cmd, stdout=subprocess.PIPE, 
             shell=True).communicate()[0]).decode('utf-8')
         self.m = MeCab.Tagger(f"-Owakati -d {path}")
-        # self.m = MeCab.Tagger("-Owakati")
         logger.info("mecab loaded")
 
-        self.model_dir = "pytorch"
-
-        try:
-            gdown.download(
-                "https://drive.google.com/drive/folders/1ofb8pedDfapBegHZVwrLnn_WiPPk8RK_",
-                self.model_dir,
-                quiet=False
-            )
-            logger.info("XLNet model is downloaded")
-        except Exception as e:
-            logger.error(e, exc_info=True)
+        self.model_dir = "hajime9652/xlnet-japanese"
+        # self.model_dir = "./backend/PyTorch"
 
         self.gen_model = XLNetLMHeadModel.from_pretrained(self.model_dir)
-        self.gen_tokenizer = XLNetTokenizer.from_pretrained(self.model_dir) 
+        self.gen_tokenizer = XLNetTokenizer.from_pretrained(self.model_dir)
          
     def generate(self, prompt="福岡のご飯は美味しい。コンパクトで暮らしやすい街。"):
         prompt = self.m.parse(prompt)
@@ -48,8 +35,8 @@ class XLNet:
     def sentiments(self, text: str):
         pass
 
-model = XLNet()
+# model = XLNet()
 
 # TODO: モデルの抽象化。。。with Depends
-def get_model():
-    return model
+# def get_model():
+#     return model

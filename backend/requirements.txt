@@ -13,3 +13,5 @@ unicorn==1.0.2
 uvicorn==0.13.4
 sentencepiece
 transformers
+torch
+gdown

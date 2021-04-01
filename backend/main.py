@@ -5,9 +5,9 @@ from nlp.router import router as nlprouter
 from starlette.middleware.cors import CORSMiddleware 
 from starlette.requests import Request
 
-import logging
-logging.basicConfig()
-logging.getLogger("nlp.decoder").setLevel(level=logging.DEBUG)
+# import logging
+# logging.basicConfig()
+# logging.getLogger("nlp.decoder").setLevel(level=logging.DEBUG)
 
 app = FastAPI()
 
