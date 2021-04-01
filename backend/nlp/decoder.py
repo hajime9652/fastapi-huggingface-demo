@@ -19,20 +19,20 @@ class XLNet:
         path = (subprocess.Popen(cmd, stdout=subprocess.PIPE, 
             shell=True).communicate()[0]).decode('utf-8')
         self.m = MeCab.Tagger(f"-Owakati -d {path}")
+        # self.m = MeCab.Tagger("-Owakati")
         logger.info("mecab loaded")
 
-        self.model_dir = Path("pytorch")
+        self.model_dir = "pytorch"
 
-        if not self.model_dir.exists():
-            try:
-                gdown.download(
-                    "https://drive.google.com/drive/folders/1ofb8pedDfapBegHZVwrLnn_WiPPk8RK_?usp=sharing",
-                    self.model_dir,
-                    quiet=False
-                )
-                logger.info("XLNet model is downloaded")
-            except Exception as e:
-                logger.error(e, exc_info=True)
+        try:
+            gdown.download(
+                "https://drive.google.com/drive/folders/1ofb8pedDfapBegHZVwrLnn_WiPPk8RK_",
+                self.model_dir,
+                quiet=False
+            )
+            logger.info("XLNet model is downloaded")
+        except Exception as e:
+            logger.error(e, exc_info=True)
 
         self.gen_model = XLNetLMHeadModel.from_pretrained(self.model_dir)
         self.gen_tokenizer = XLNetTokenizer.from_pretrained(self.model_dir) 
@@ -48,6 +48,8 @@ class XLNet:
     def sentiments(self, text: str):
         pass
 
+model = XLNet()
+
 # TODO: モデルの抽象化。。。with Depends
 def get_model():
-    return model = XLNet
+    return model
